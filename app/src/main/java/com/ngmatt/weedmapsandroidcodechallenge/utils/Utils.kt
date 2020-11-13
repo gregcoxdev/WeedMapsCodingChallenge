@@ -1,11 +1,8 @@
 package com.ngmatt.weedmapsandroidcodechallenge.utils
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.core.app.ActivityCompat
 
 /**
  * Utils is a static utility class that contains miscellaneous methods to be re-used in several

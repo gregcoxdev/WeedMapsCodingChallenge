@@ -19,6 +19,8 @@ import com.ngmatt.weedmapsandroidcodechallenge.data.constants.DEFAULT_LONGITUDE
 object LocationUtils {
 
     private var locationManager: LocationManager? = null
+    private val networkProviderListener = NetworkProviderListener()
+    private val gpsProviderListener = GpsProviderListener()
     private var lastKnownLocationGps: Location? = null
     private var lastKnownLocationNetwork: Location ? = null
 
@@ -27,7 +29,7 @@ object LocationUtils {
      * changed. This value will take priority over GPS, since GPS can be spotty and sometimes not
      * available at all.
      */
-    object NetworkProviderListener: LocationListener {
+    class NetworkProviderListener: LocationListener {
         override fun onLocationChanged(location: Location) {
             lastKnownLocationNetwork = location
         }
@@ -37,7 +39,7 @@ object LocationUtils {
      * GPSProviderListener is a location listener that will report for GPS location changed. This
      * value can be spotty so we'll take this location second in priority to Network.
      */
-    object GpsProviderListener: LocationListener {
+    class GpsProviderListener: LocationListener {
         override fun onLocationChanged(location: Location) {
             lastKnownLocationGps = location
         }
@@ -58,8 +60,8 @@ object LocationUtils {
     @SuppressLint("MissingPermission")
     fun startLocationUpdates(context: Context) {
         if (isLocationPermissionGranted(context)) {
-            locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, DEFAULT_LOCATION_UPDATE_MILLIS, DEFAULT_LOCATION_MINIMUM_DISTANCE, NetworkProviderListener)
-            locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, DEFAULT_LOCATION_UPDATE_MILLIS, DEFAULT_LOCATION_MINIMUM_DISTANCE, GpsProviderListener)
+            locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, DEFAULT_LOCATION_UPDATE_MILLIS, DEFAULT_LOCATION_MINIMUM_DISTANCE, networkProviderListener)
+            locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, DEFAULT_LOCATION_UPDATE_MILLIS, DEFAULT_LOCATION_MINIMUM_DISTANCE, gpsProviderListener)
         }
     }
 
@@ -69,8 +71,8 @@ object LocationUtils {
      */
     fun stopLocationUpdates(context: Context) {
         if (isLocationPermissionGranted(context)) {
-            locationManager?.removeUpdates(NetworkProviderListener)
-            locationManager?.removeUpdates(GpsProviderListener)
+            locationManager?.removeUpdates(networkProviderListener)
+            locationManager?.removeUpdates(gpsProviderListener)
         }
     }
 

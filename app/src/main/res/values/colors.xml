@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#38bfc2</color>
+    <color name="colorPrimaryDark">#38bfc2</color>
+    <color name="colorAccent">#38bfc2</color>
+    <color name="colorText">@android:color/black</color>
+
+    <color name="colorGpsButtonText">@android:color/white</color>
+    <color name="colorGpsButton">@color/colorPrimary</color>
+
+    <color name="colorSuggestionBackground">@android:color/white</color>
+
+</resources>

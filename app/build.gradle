@@ -1,0 +1,116 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.0"
+
+    defaultConfig {
+        applicationId "com.ngmatt.weedmapsandroidcodechallenge"
+        minSdkVersion 26
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
+    implementation "androidx.core:core-ktx:${Versions.core_ktx}"
+    implementation "androidx.appcompat:appcompat:${Versions.app_compat}"
+    implementation "org.koin:koin-gradle-plugin:${Versions.koin}"
+    implementation "org.koin:koin-androidx-scope:${Versions.koin}"
+    implementation "org.koin:koin-androidx-viewmodel:${Versions.koin}"
+    implementation "org.koin:koin-androidx-fragment:${Versions.koin}"
+    implementation "androidx.core:core-ktx:${Versions.kotlin_ext}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlin_coroutines}"
+    implementation "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+    implementation "com.squareup.moshi:moshi:${Versions.moshi}"
+    implementation "com.squareup.retrofit2:converter-moshi:${Versions.retrofit_moshi_converter}"
+    implementation "com.github.bumptech.glide:glide:${Versions.glide}"
+    implementation "androidx.constraintlayout:constraintlayout:${Versions.constraint_layout}"
+
+//    /*
+//     *
+//     */
+//    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlin_coroutines_android}"
+
+    /*
+     * Needed to utilize the KotlinJsonAdapterFactory and automatically parse the JSON into the
+     * field name. There were ways around this but would have inflated the code for little gain.
+     */
+    implementation "com.squareup.moshi:moshi-kotlin:${Versions.moshi_kotlin}"
+
+    /*
+     * A staple for Android UI design. This is added purely for a better UI experience.
+     */
+    implementation "com.google.android.material:material:${Versions.material_design}"
+
+    /*
+     * Purely UI related library that allows for a much smoother UI experience using Adobe After
+     * Effects.
+     */
+    implementation "com.airbnb.android:lottie:${Versions.lottie}"
+
+    /*
+     * Added for compatibility between Kotlin Coroutines and LiveData.
+     */
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.livedata_ktx}"
+
+    /*
+     * Since the demonstration code resides within a fragment, the activity and fragment must be
+     * tested separately. Google recommends using the fragment-testing library in order to test
+     * solely the fragment and not the activity in order to keep tests isolated.
+     * @see https://developer.android.com/training/basics/fragments/testing
+     */
+    debugImplementation ("androidx.fragment:fragment-testing:${Versions.fragment_testing}") {
+        exclude group: 'androidx.test', module: 'core'
+    }
+
+    testImplementation "junit:junit:${Versions.junit}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockito_kotlin}"
+    testImplementation "org.mockito:mockito-inline:${Versions.mockito_inline}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlin_coroutines}"
+
+    /*
+     * This dependency was added for familiarity of static mocking. The only tools I used to mock a
+     * static value prior to this was PowerMockito in Java.
+     */
+    testImplementation "io.mockk:mockk:${Versions.mockk}"
+
+    /*
+     * Added for support for LiveData testing with InstantTaskExecutorRule. This is due to
+     * familiarity with LiveData over Kotlin Coroutines. However, LiveData is used in conjunction
+     * with Kotlin Coroutines in implementation.
+     */
+    testImplementation "androidx.arch.core:core-testing:${Versions.core_testing}"
+
+    androidTestImplementation "androidx.test.ext:junit:${Versions.android_junit}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${Versions.espresso}"
+
+    /*
+     * Added this dependency for usage with RecyclerViewActions in Espresso.
+     */
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:${Versions.espresso_contrib}"
+
+}

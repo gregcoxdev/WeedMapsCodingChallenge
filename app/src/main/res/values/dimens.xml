@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Shared Dimensions -->
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_radius">7dp</dimen>
+    <dimen name="card_margin_horizontal">15dp</dimen>
+    <dimen name="card_margin_vertical">10dp</dimen>
+    <dimen name="card_container_padding">10dp</dimen>
+
+    <!-- Search Dimensions -->
+    <dimen name="card_search_margin">10dp</dimen>
+    <dimen name="card_search_elevation">@dimen/card_elevation</dimen>
+    <dimen name="card_search_radius">@dimen/card_radius</dimen>
+    <dimen name="textview_searched_margin_top">10dp</dimen>
+    <dimen name="textview_searched_margin_horizontal">@dimen/card_margin_horizontal</dimen>
+    <dimen name="textview_searched_margin_bottom">10dp</dimen>
+
+    <!-- Business Dimensions -->
+    <dimen name="card_business_height">185dp</dimen>
+    <dimen name="card_business_margin_horizontal">@dimen/card_margin_horizontal</dimen>
+    <dimen name="card_business_margin_vertical">@dimen/card_margin_vertical</dimen>
+    <dimen name="card_business_elevation">@dimen/card_elevation</dimen>
+    <dimen name="card_business_radius">@dimen/card_radius</dimen>
+    <dimen name="card_business_container_padding">@dimen/card_container_padding</dimen>
+    <dimen name="business_description_text_size">17sp</dimen>
+    <dimen name="business_name_text_size">22sp</dimen>
+    <dimen name="textview_rating_margin_top">-5dp</dimen>
+    <dimen name="textview_rating_margin_bottom">0dp</dimen>
+
+    <!-- GPS Dimensions -->
+    <dimen name="card_gps_height">125dp</dimen>
+    <dimen name="card_gps_margin_horizontal">@dimen/card_margin_horizontal</dimen>
+    <dimen name="card_gps_margin_vertical">@dimen/card_margin_vertical</dimen>
+    <dimen name="card_gps_elevation">@dimen/card_elevation</dimen>
+    <dimen name="card_gps_radius">@dimen/card_radius</dimen>
+    <dimen name="card_gps_container_padding">@dimen/card_container_padding</dimen>
+    <dimen name="textview_gps_margin_bottom">10dp</dimen>
+    <dimen name="gps_button_height">40dp</dimen>
+    <dimen name="gps_button_width">80dp</dimen>
+
+    <!-- Loading Dimensions -->
+    <dimen name="card_loading_height">85dp</dimen>
+    <dimen name="card_loading_margin_horizontal">@dimen/card_margin_horizontal</dimen>
+    <dimen name="card_loading_margin_vertical">@dimen/card_margin_vertical</dimen>
+
+    <!-- Suggestion Dimensions -->
+    <dimen name="suggestion_margin_horizontal">@dimen/card_margin_horizontal</dimen>
+    <dimen name="suggestion_margin_vertical">@dimen/card_margin_vertical</dimen>
+
+</resources>

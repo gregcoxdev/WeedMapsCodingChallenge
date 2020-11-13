@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">WeedMaps Coding Challenge</string>
+    <string name="business_item_rating">"%1$.1f Stars"</string>
+    <string name="business_review_none">Top Rated Review: There are no reviews yet for this business. Be the first one!</string>
+    <string name="business_review">Top Rated Review: %1$s</string>
+    <string name="search_bar_query_hint">Search</string>
+    <string name="results_for_search">Showing results for %1$s</string>
+    <string name="gps_card_title">Find a business near you</string>
+    <string name="gps_card_description">Enable location in order to find businesses around your area.</string>
+    <string name="gps_card_action">ALLOW</string>
+</resources>

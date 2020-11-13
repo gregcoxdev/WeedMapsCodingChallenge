@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.view.HelloWorldActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/containerSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/card_search_margin"
+        android:layout_marginStart="@dimen/card_search_margin"
+        android:layout_marginEnd="@dimen/card_search_margin"
+        android:layout_marginBottom="@dimen/card_search_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardElevation="@dimen/card_search_elevation"
+        app:cardCornerRadius="@dimen/card_search_radius">
+
+        <com.ngmatt.weedmapsandroidcodechallenge.ui.custom.RecentSearchView
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/font_figma"
+            app:fontFamily="@font/font_figma"
+            app:queryHint="@string/search_bar_query_hint" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewSearched"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/textview_searched_margin_top"
+        android:layout_marginStart="@dimen/textview_searched_margin_horizontal"
+        android:layout_marginEnd="@dimen/textview_searched_margin_horizontal"
+        android:layout_marginBottom="@dimen/textview_searched_margin_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/containerSearch"
+        android:text="@string/results_for_search"
+        android:fontFamily="@font/font_figma"
+        app:fontFamily="@font/font_figma"
+        android:visibility="gone"
+        android:ellipsize="end"
+        android:maxLines="1" />
+
+    <com.ngmatt.weedmapsandroidcodechallenge.ui.custom.InfiniteRecyclerView
+        android:id="@+id/recyclerView"
+        android:layoutAnimation="@anim/layout_animation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSearched"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.ngmatt.weedmapsandroidcodechallenge.ui.custom.LottieProgressBar
+        android:id="@+id/lottieProgressLoader"
+        app:lottie_fileName="lottie_animation_loading_joined.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

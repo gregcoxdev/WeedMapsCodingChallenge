@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/card_business_height"
+    android:layout_marginStart="@dimen/card_business_margin_horizontal"
+    android:layout_marginEnd="@dimen/card_business_margin_horizontal"
+    android:layout_marginTop="@dimen/card_business_margin_vertical"
+    android:layout_marginBottom="@dimen/card_business_margin_vertical"
+    app:cardElevation="@dimen/card_business_elevation"
+    app:cardCornerRadius="@dimen/card_business_radius">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/card_business_container_padding"
+                android:orientation="vertical"
+                android:weightSum="4">
+
+                <ImageView
+                    android:id="@+id/imageViewIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:scaleType="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="contentDescription" />
+
+                <LinearLayout
+                    android:id="@+id/container_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textViewName"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorText"
+                        android:textSize="@dimen/business_name_text_size"
+                        android:fontFamily="@font/font_figma"
+                        app:fontFamily="@font/font_figma"
+                        android:includeFontPadding="false"
+                        tools:text="Name" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textViewRating"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/textview_rating_margin_top"
+                        android:layout_marginBottom="@dimen/textview_rating_margin_bottom"
+                        android:textColor="@color/colorText"
+                        android:textSize="@dimen/business_description_text_size"
+                        android:fontFamily="@font/font_figma"
+                        app:fontFamily="@font/font_figma"
+                        android:includeFontPadding="false"
+                        tools:text="Rating" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textViewReview"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/font_figma"
+                        app:fontFamily="@font/font_figma"
+                        android:textColor="@color/colorText"
+                        android:textSize="@dimen/business_description_text_size"
+                        android:includeFontPadding="false"
+                        tools:text="Lorem ipsum dolor sit amet, est ei eripuit tractatos vituperatoribus, ei qui iusto utinam. Ea sonet graecis conceptam nec, tempor oportere vis id. " />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,6 +1,4 @@
-# Weedmaps Android Code Challenge!
-
-# Challenge Feedback
+# Weedmaps Android Code Challenge Feedback
 
 It was quite a challenge. Not as much in the technical aspect as trying not to get carried away with too many details. There is so much more that I could have done but I did not have time for. I easily put double the suggested hours into this project! I tried to stay as true to the linked dependencies as much as possible, even though some of them I had no prior experience with. For the dependencies that I have added (some being nicer UI, some being technical), I have included an explanation inside the build.gradle. That being said, I can understand why the team went with Koin over Dagger after learning about it while implementing. It was a great learning experience.
 
@@ -25,6 +23,9 @@ It was quite a challenge. Not as much in the technical aspect as trying not to g
  1. Creating a bi-function of the business and review APIs (since they are separate network calls) and returning 5 APIs as a single batch. This was more difficult because I have not used coroutines as much prior to this challenge. I've done this with RxJava though, and the API's turned out fairly similar after searching around.
  2. Unit testing with coroutines was not my strong point. I've written unit tests for RxJava and LiveData, but with the given dependencies I was having trouble in the allotted time.
  3. Fully understanding of the caching implementation for Retrofit (moreso OkHttp).
+
+
+# Weedmaps Android Code Challenge!
 
 Hi there!  Thank you for taking the time to conduct the Weedmaps Android code challenge.  Please use this as a foundation to help you save time setting up your workspace; this project already contains some common dependencies and frameworks used in most Android projects.  
 **If there are other dependencies and/or frameworks that you'd like to introduce/use please feel free to add them!**

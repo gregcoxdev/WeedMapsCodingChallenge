@@ -1,5 +1,31 @@
 # Weedmaps Android Code Challenge!
 
+# Challenge Feedback
+
+It was quite a challenge. Not as much in the technical aspect as trying not to get carried away with too many details. There is so much more that I could have done but I did not have time for. I easily put double the suggested hours into this project! I tried to stay as true to the linked dependencies as much as possible, even though some of them I had no prior experience with. For the dependencies that I have added (some being nicer UI, some being technical), I have included an explanation inside the build.gradle. That being said, I can understand why the team went with Koin over Dagger after learning about it while implementing. It was a great learning experience.
+
+## These are the requirements that I met during development:
+ 1. Return businesses based on users' input in the search field. Each business should have the name, image, and top review of the business.
+ 2. Endlessly scroll based on API's paging functionality.
+ 3. Unit testing for important functionality.
+ 4. Requesting the user's location and sending that up in the business search request.
+ 5. Save the list of a user's recent searches and display them as autocomplete suggestions.
+ 6. Integration tests that verify the behavior above.
+ 7. Provide caching of the API requests which is invalidated after 15 days.
+
+## These are the things that I avoided due to time constraints:
+ 1. Improved error management.
+     - Dialogs for permission rationale over the Snackbar.
+     - Handle network/general issues with a better UI design.
+     - Haptic feedback.
+ 2. Better thread management to meet the maximum Yelp Fusion API request limit in a more efficient manner.
+ 3. Creating a mock web server for testing mock Retrofit server values. This one I felt was important but would have taken additional time to set up infrastructure for.
+
+## Difficulties I had during this project:
+ 1. Creating a bi-function of the business and review APIs (since they are separate network calls) and returning 5 APIs as a single batch. This was more difficult because I have not used coroutines as much prior to this challenge. I've done this with RxJava though, and the API's turned out fairly similar after searching around.
+ 2. Unit testing with coroutines was not my strong point. I've written unit tests for RxJava and LiveData, but with the given dependencies I was having trouble in the allotted time.
+ 3. Fully understanding of the caching implementation for Retrofit (moreso OkHttp).
+
 Hi there!  Thank you for taking the time to conduct the Weedmaps Android code challenge.  Please use this as a foundation to help you save time setting up your workspace; this project already contains some common dependencies and frameworks used in most Android projects.  
 **If there are other dependencies and/or frameworks that you'd like to introduce/use please feel free to add them!**
 

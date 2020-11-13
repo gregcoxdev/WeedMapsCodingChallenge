@@ -29,34 +29,50 @@
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textViewSearched"
-        style="@style/TextAppearance.AppCompat.Large"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/containerResults"
+        android:orientation="vertical"
         android:layout_marginTop="@dimen/textview_searched_margin_top"
         android:layout_marginStart="@dimen/textview_searched_margin_horizontal"
         android:layout_marginEnd="@dimen/textview_searched_margin_horizontal"
         android:layout_marginBottom="@dimen/textview_searched_margin_bottom"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/containerSearch"
-        android:text="@string/results_for_search"
-        android:fontFamily="@font/font_figma"
-        app:fontFamily="@font/font_figma"
-        android:visibility="gone"
-        android:ellipsize="end"
-        android:maxLines="1" />
-
-    <com.ngmatt.weedmapsandroidcodechallenge.ui.custom.InfiniteRecyclerView
-        android:id="@+id/recyclerView"
-        android:layoutAnimation="@anim/layout_animation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/containerSearch"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewSearched"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="0dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewSearched"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_marginStart="@dimen/textview_search_result_margin_horizontal"
+            android:layout_marginEnd="@dimen/textview_search_result_margin_horizontal"
+            android:layout_marginBottom="@dimen/textview_search_result_margin_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/results_for_search"
+            android:fontFamily="@font/font_figma"
+            app:fontFamily="@font/font_figma"
+            android:ellipsize="end"
+            android:visibility="gone"
+            android:maxLines="1" />
+
+        <View
+            android:id="@+id/searchDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivider"
+            android:visibility="gone">
+        </View>
+
+        <com.ngmatt.weedmapsandroidcodechallenge.ui.custom.PaginationRecyclerView
+            android:id="@+id/recyclerView"
+            android:layoutAnimation="@anim/layout_animation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </LinearLayout>
 
     <com.ngmatt.weedmapsandroidcodechallenge.ui.custom.LottieProgressBar
         android:id="@+id/lottieProgressLoader"

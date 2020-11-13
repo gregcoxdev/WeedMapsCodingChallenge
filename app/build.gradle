@@ -50,11 +50,6 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:${Versions.glide}"
     implementation "androidx.constraintlayout:constraintlayout:${Versions.constraint_layout}"
 
-//    /*
-//     *
-//     */
-//    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlin_coroutines_android}"
-
     /*
      * Needed to utilize the KotlinJsonAdapterFactory and automatically parse the JSON into the
      * field name. There were ways around this but would have inflated the code for little gain.

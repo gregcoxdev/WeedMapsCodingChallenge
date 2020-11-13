@@ -43,13 +43,15 @@ class YelpSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI()
+        initRecyclerView()
+        initSearchView()
+        startLoadingAnimation()
     }
 
     override fun onResume() {
         super.onResume()
         if (!LocationUtils.isLocationPermissionGranted(context as Activity)) {
-            showGpsCard()
+            showLocationCard()
         }
         LocationUtils.startLocationUpdates(context as Activity)
     }
@@ -60,33 +62,21 @@ class YelpSearchFragment : Fragment() {
     }
 
     /**
-     * Hide the GPS card in the recycler view.
+     * Hide the location card in the recycler view.
      */
-    fun hideGpsCard() {
-        businessAdapter.apply {
-            removeGpsCard()
-            notifyDataSetChanged()
+    fun hideLocationCard() {
+        businessAdapter.removeLocationCard()
+        searchBar.apply {
+            lastSearchedTerm?.let {
+                onSearchAction(it)
+            }
         }
     }
 
     /**
-     * Show the GPS card in the recycler view.
+     * Show the location card in the recycler view.
      */
-    private fun showGpsCard() {
-        businessAdapter.apply {
-            addGpsCard()
-            notifyDataSetChanged()
-        }
-    }
-
-    /**
-     * Initialize the UI components and their respective listeners.
-     */
-    private fun setupUI() {
-        initRecyclerView()
-        initSearchView()
-        startLoadingAnimation()
-    }
+    private fun showLocationCard() = businessAdapter.addLocationCard()
 
     /**
      * Initialize the recycler view components and it's action when requesting more data.
@@ -105,49 +95,25 @@ class YelpSearchFragment : Fragment() {
         }
     }
 
-
     /**
      * Initialize the search view components and action when a new query is submitted.
      */
     @SuppressLint("MissingPermission")
     private fun initSearchView() {
-        searchBar.apply {
-            onSearchLambda = { queryTerm ->
+        searchBar.onSearchAction = { queryTerm ->
 
-                // Change the text but wait to make it visible at the same time as the recycler.
-                Log.i(TAG, "Searching for results for $queryTerm.")
-                textViewSearched.visibility = View.GONE
-                textViewSearched.text = resources.getString(R.string.results_for_search, queryTerm)
+            // Change the text but wait to make it visible at the same time as the recycler.
+            Log.i(TAG, "Searching for results for $queryTerm.")
+            textViewSearched.visibility = View.GONE
+            textViewSearched.text = resources.getString(R.string.results_for_search, queryTerm)
 
-                // Display the loading animation while searching.
-                startLoadingAnimation()
+            // Display the loading animation while searching.
+            startLoadingAnimation()
 
-                // Begin searching and reset the pagination offset.
-                businessAdapter.apply {
-                    clearBusinesses()
-                    notifyDataSetChanged()
-                }
-                searchOffset = 0
-
-                // If permission is still granted before trying to grab it, if it fails, use the default.
-                if (LocationUtils.isLocationPermissionGranted(context)) {
-                    // Pull location and send that with the request.
-                    val userLocation = LocationUtils.getLastKnownLocation(context)
-                    Log.i(TAG, "Searching businesses near $userLocation.")
-                    if (userLocation == null)
-                        searchBusinesses(
-                            queryTerm,
-                            offset = searchOffset)
-                    else
-                        searchBusinesses(
-                            queryTerm,
-                            userLocation.first,
-                            userLocation.second,
-                            searchOffset)
-                } else {
-                    searchBusinesses(queryTerm, offset = searchOffset)
-                }
-            }
+            // Begin searching and reset the pagination offset.
+            businessAdapter.clearBusinesses()
+            searchOffset = 0
+            searchBusinesses(queryTerm, offset = searchOffset)
         }
     }
 
@@ -158,14 +124,16 @@ class YelpSearchFragment : Fragment() {
     private fun startLoadingAnimation() {
         lottieProgressLoader.apply {
             startLoadingAnimation()
-            onAnimationSuccessEndLambda = {
+            onAnimationSuccessEndAction = {
                 textViewSearched.visibility = View.VISIBLE
                 recyclerView.visibility = View.VISIBLE
+                searchDivider.visibility = View.VISIBLE
                 lottieProgressLoader.visibility = View.GONE
             }
-            onAnimationFailureEndLambda = {
+            onAnimationFailureEndAction = {
                 textViewSearched.visibility = View.VISIBLE
                 recyclerView.visibility = View.VISIBLE
+                searchDivider.visibility = View.VISIBLE
                 lottieProgressLoader.visibility = View.GONE
             }
         }
@@ -174,22 +142,23 @@ class YelpSearchFragment : Fragment() {
     /**
      * Search for a business or businesses from Yelp with the given parameters.
      * @param term The query term to search.
-     * @param latitude The latitude of the location to search.
-     * @param longitude The longitude of the location to search.
      * @param offset The offset of the request for pagination.
      * @return The LiveData to observe for this transaction.
      */
-    private fun searchBusinesses(term: String, latitude: Double = DEFAULT_LATITUDE,
-                                 longitude: Double = DEFAULT_LONGITUDE, offset: Int) =
-        viewModel.searchForBusinesses(term, latitude, longitude, offset).observe(viewLifecycleOwner, Observer {
-            it?.let { resource ->
-                when (resource.searchStatus) {
-                    SUCCESS -> handleSuccessRequest(resource)
-                    ERROR -> handleErrorRequest(resource)
-                    LOADING -> handleLoadingRequest()
+    private fun searchBusinesses(term: String, offset: Int) {
+        val location = LocationUtils.getLastKnownLocation(context as Activity)
+        Log.i(TAG, "Searching businesses near $location for $term.")
+        viewModel.searchForBusinesses(term, location.first ?: DEFAULT_LATITUDE, location.second ?: DEFAULT_LONGITUDE, offset)
+            .observe(viewLifecycleOwner, Observer {
+                it?.let { resource ->
+                    when (resource.searchStatus) {
+                        SUCCESS -> handleSuccessRequest(resource)
+                        ERROR -> handleErrorRequest(resource)
+                        LOADING -> handleLoadingRequest()
+                    }
                 }
-            }
-        })
+            })
+    }
 
     /**
      * Handle the status update when a request is successful. Generally, this means updating the UI
@@ -218,13 +187,10 @@ class YelpSearchFragment : Fragment() {
      */
     private fun handleErrorRequest(resource: Resource<BusinessBatch>) {
         textViewSearched.text = resource.message
-        if (businessAdapter.itemCount <= 0) {
+        if (businessAdapter.itemCount == 0) {
             lottieProgressLoader.startFailureAnimation(false)
         } else {
-            businessAdapter.apply {
-                removeLoadingCard()
-                notifyDataSetChanged()
-            }
+            businessAdapter.removeLoadingCard()
         }
         recyclerView.debounceRequests = false
     }
@@ -234,16 +200,14 @@ class YelpSearchFragment : Fragment() {
      * something like a progress bar to the user.
      */
     private fun handleLoadingRequest() {
-        if (businessAdapter.itemCount <= 0) {
+        if (businessAdapter.itemCount == 0) {
             // Show the large progress bar since there are no recycler items.
             lottieProgressLoader.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
+            searchDivider.visibility = View.GONE
         } else {
             // Add a loading bar to the recycler and debounce scrolling requests.
-            businessAdapter.apply {
-                addLoadingCard()
-                notifyDataSetChanged()
-            }
+            businessAdapter.addLoadingCard()
             recyclerView.debounceRequests = true
         }
     }
@@ -252,10 +216,6 @@ class YelpSearchFragment : Fragment() {
      * Add a batch of business data into the business adapter.
      * @param businessBatch A batch of multiple business data to be added to the adapter.
      */
-    private fun addBatch(businessBatch: BusinessBatch) {
-        businessAdapter.apply {
-            addBusinesses(businessBatch.businessData)
-            notifyDataSetChanged()
-        }
-    }
+    private fun addBatch(businessBatch: BusinessBatch) = businessAdapter.addBusinesses(businessBatch.businessData)
+
 }

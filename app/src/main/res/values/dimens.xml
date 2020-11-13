@@ -2,9 +2,9 @@
 <resources>
 
     <!-- Shared Dimensions -->
-    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_elevation">6dp</dimen>
     <dimen name="card_radius">7dp</dimen>
-    <dimen name="card_margin_horizontal">15dp</dimen>
+    <dimen name="card_margin_horizontal">5dp</dimen>
     <dimen name="card_margin_vertical">10dp</dimen>
     <dimen name="card_container_padding">10dp</dimen>
 
@@ -15,6 +15,8 @@
     <dimen name="textview_searched_margin_top">10dp</dimen>
     <dimen name="textview_searched_margin_horizontal">@dimen/card_margin_horizontal</dimen>
     <dimen name="textview_searched_margin_bottom">10dp</dimen>
+    <dimen name="textview_search_result_margin_horizontal">13dp</dimen>
+    <dimen name="textview_search_result_margin_bottom">5dp</dimen>
 
     <!-- Business Dimensions -->
     <dimen name="card_business_height">185dp</dimen>
@@ -23,10 +25,11 @@
     <dimen name="card_business_elevation">@dimen/card_elevation</dimen>
     <dimen name="card_business_radius">@dimen/card_radius</dimen>
     <dimen name="card_business_container_padding">@dimen/card_container_padding</dimen>
-    <dimen name="business_description_text_size">17sp</dimen>
-    <dimen name="business_name_text_size">22sp</dimen>
+    <dimen name="business_description_text_size">15sp</dimen>
+    <dimen name="business_name_text_size">20sp</dimen>
+    <dimen name="textview_name_margin_top">3dp</dimen>
     <dimen name="textview_rating_margin_top">-5dp</dimen>
-    <dimen name="textview_rating_margin_bottom">0dp</dimen>
+    <dimen name="textview_rating_margin_bottom">3dp</dimen>
 
     <!-- GPS Dimensions -->
     <dimen name="card_gps_height">125dp</dimen>

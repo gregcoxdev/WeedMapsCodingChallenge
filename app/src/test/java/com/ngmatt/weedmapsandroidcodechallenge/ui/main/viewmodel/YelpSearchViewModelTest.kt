@@ -11,9 +11,11 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.mockk.every
 import io.mockk.mockkStatic
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -27,7 +29,8 @@ class YelpSearchViewModelTest {
 
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
     private val yelpBusinessSearchRepository: YelpBusinessSearchRepository = mock()
-    private val yelpSearchViewModel = YelpSearchViewModel(yelpBusinessSearchRepository, testCoroutineDispatcher)
+    private val yelpSearchViewModel =
+        YelpSearchViewModel(yelpBusinessSearchRepository, testCoroutineDispatcher)
 
     @Before
     fun setUp() {
@@ -35,16 +38,31 @@ class YelpSearchViewModelTest {
             every { Log.d(any(), any()) } returns 0
             every { Log.e(any(), any()) } returns 0
         }
+        Dispatchers.setMain(testCoroutineDispatcher)
     }
 
     @Test
     fun testGetBusinessBatch() {
         runBlockingTest {
-            whenever(yelpBusinessSearchRepository.getBusinesses(any(), any(), any(), any())).thenReturn(
+            whenever(
+                yelpBusinessSearchRepository.getBusinesses(
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            ).thenReturn(
                 defaultResponseBusinessResponse
             )
-            whenever(yelpBusinessSearchRepository.getReviews(any())).thenReturn(defaultResponseReviewResponse)
-            val businessBatch = yelpSearchViewModel.getBusinessBatch(DEFAULT_BUSINESS_NAME, BUSINESS_SEARCH_LATITUDE, BUSINESS_SEARCH_LONGITUDE, BUSINESS_SEARCH_OFFSET)
+            whenever(yelpBusinessSearchRepository.getReviews(any())).thenReturn(
+                defaultResponseReviewResponse
+            )
+            val businessBatch = yelpSearchViewModel.getBusinessBatch(
+                DEFAULT_BUSINESS_NAME,
+                BUSINESS_SEARCH_LATITUDE,
+                BUSINESS_SEARCH_LONGITUDE,
+                BUSINESS_SEARCH_OFFSET
+            )
             assertEquals(defaultBusiness, businessBatch.businessData[0].business)
             assertEquals(defaultReview, businessBatch.businessData[0].reviews[0])
         }
@@ -53,7 +71,12 @@ class YelpSearchViewModelTest {
     @Test
     fun testSearchForBusinessesLoading() {
         runBlockingTest {
-            val businessSearch = yelpSearchViewModel.searchForBusinesses(DEFAULT_BUSINESS_NAME, BUSINESS_SEARCH_LATITUDE, BUSINESS_SEARCH_LONGITUDE, BUSINESS_SEARCH_OFFSET)
+            val businessSearch = yelpSearchViewModel.searchForBusinesses(
+                DEFAULT_BUSINESS_NAME,
+                BUSINESS_SEARCH_LATITUDE,
+                BUSINESS_SEARCH_LONGITUDE,
+                BUSINESS_SEARCH_OFFSET
+            )
             val resourceBusinessBatch = businessSearch.blockingObserve()
             assertEquals(Resource.loading(null), resourceBusinessBatch)
         }

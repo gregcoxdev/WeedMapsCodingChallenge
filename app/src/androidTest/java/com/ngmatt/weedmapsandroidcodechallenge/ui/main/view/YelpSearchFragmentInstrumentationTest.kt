@@ -22,8 +22,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-private const val INPUT_SEVERAL_RESULTS = "Test"
-private const val INPUT_ZERO_RESULTS = "THIS WILL NOT BE FOUND ANYWHERE!"
+private const val INPUT_SEVERAL_RESULTS = "Food"
+private const val INPUT_ZERO_RESULTS = ";QWEASDZXCPOILKJMNB!;"
 
 @RunWith(AndroidJUnit4::class)
 class YelpSearchFragmentInstrumentationTest {
@@ -69,7 +69,8 @@ class YelpSearchFragmentInstrumentationTest {
         onView(withId(R.id.searchBar)).perform(ViewActions.click())
         onView(withId(R.id.searchBar)).perform(typeSearchViewText(INPUT_ZERO_RESULTS, true))
         waitForNetwork()
-        onView(withId(R.id.textViewSearched)).check(matches(withText(fragment.resources.getString(R.string.results_for_search, INPUT_ZERO_RESULTS))))
+        println(fragment.textViewSearched.text)
+        onView(withId(R.id.textViewSearched)).check(matches(withText("No search results available for $INPUT_ZERO_RESULTS.")))
         assertEquals(View.VISIBLE, fragment.recyclerView.visibility)
         assertEquals(0, fragment.businessAdapter.itemCount)
     }

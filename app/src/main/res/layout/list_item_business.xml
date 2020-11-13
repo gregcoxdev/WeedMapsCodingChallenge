@@ -47,6 +47,7 @@
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/textview_name_margin_top"
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/business_name_text_size"
                         android:fontFamily="@font/font_figma"

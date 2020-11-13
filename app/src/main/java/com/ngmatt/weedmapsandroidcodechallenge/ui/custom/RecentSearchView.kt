@@ -19,15 +19,16 @@ import com.ngmatt.weedmapsandroidcodechallenge.R
 class RecentSearchView : SearchView, SearchView.OnQueryTextListener,
     SearchView.OnSuggestionListener {
 
-    var onSearchLambda: ((query: String) -> Unit) = {}
+    var onSearchAction: ((query: String) -> Unit) = {}
     var lastSearchedTerm: String? = null
 
     private val suggestions = linkedSetOf<String>()
 
     constructor(context: Context): super(context)
+
     constructor(context: Context, attrs: AttributeSet): super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr : Int)
-            : super(context, attrs, defStyleAttr)
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr : Int) : super(context, attrs, defStyleAttr)
 
     init {
         setIconifiedByDefault(false)
@@ -36,12 +37,7 @@ class RecentSearchView : SearchView, SearchView.OnQueryTextListener,
         findViewById<AutoCompleteTextView>(R.id.search_src_text).threshold = 1
         val from = arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1)
         val to = intArrayOf(R.id.item_label)
-        suggestionsAdapter = SimpleCursorAdapter(context,
-            R.layout.list_item_suggestion,
-            null,
-            from,
-            to,
-            CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
+        suggestionsAdapter = SimpleCursorAdapter(context, R.layout.list_item_suggestion, null, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
     }
 
     override fun onQueryTextChange(query: String?): Boolean {
@@ -61,7 +57,7 @@ class RecentSearchView : SearchView, SearchView.OnQueryTextListener,
         updateSuggestions()
 
         // Inform the user that a new search has started.
-        onSearchLambda(query)
+        onSearchAction(query)
 
         return false
     }

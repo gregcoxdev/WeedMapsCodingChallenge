@@ -65,7 +65,7 @@ fun provideOfflineInterceptor(context: Context): Interceptor =
 fun provideNetworkInterceptor(): Interceptor = Interceptor { chain ->
     val response: Response = chain.proceed(chain.request())
     val cacheControl = CacheControl.Builder()
-        .maxAge(DEFAULT_AGE_TIME, TimeUnit.MINUTES)
+        .maxAge(DEFAULT_AGE_TIME, TimeUnit.MILLISECONDS)
         .build()
     response.newBuilder()
         .removeHeader(HEADER_PRAGMA)

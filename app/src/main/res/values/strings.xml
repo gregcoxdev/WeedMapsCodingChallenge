@@ -5,6 +5,7 @@
     <string name="business_review">Top Rated Review: %1$s</string>
     <string name="search_bar_query_hint">Search</string>
     <string name="results_for_search">Showing results for %1$s</string>
+    <string name="location_permission_denied">Enable the location permission in the settings application to use this feature.</string>
     <string name="gps_card_title">Find a business near you</string>
     <string name="gps_card_description">Enable location in order to find businesses around your area.</string>
     <string name="gps_card_action">ALLOW</string>

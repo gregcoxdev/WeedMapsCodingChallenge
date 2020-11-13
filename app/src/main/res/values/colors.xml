@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#38bfc2</color>
     <color name="colorAccent">#38bfc2</color>
     <color name="colorText">@android:color/black</color>
+    <color name="colorDivider">@android:color/darker_gray</color>
 
     <color name="colorGpsButtonText">@android:color/white</color>
     <color name="colorGpsButton">@color/colorPrimary</color>

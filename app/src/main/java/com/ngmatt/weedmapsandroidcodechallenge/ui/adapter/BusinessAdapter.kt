@@ -14,7 +14,6 @@ import com.ngmatt.weedmapsandroidcodechallenge.data.constants.PERMISSION_REQUEST
 import com.ngmatt.weedmapsandroidcodechallenge.data.model.Business
 import com.ngmatt.weedmapsandroidcodechallenge.data.model.BusinessData
 import com.ngmatt.weedmapsandroidcodechallenge.data.model.Review
-import com.ngmatt.weedmapsandroidcodechallenge.utils.LocationUtils
 import kotlinx.android.synthetic.main.list_item_business.view.*
 import kotlinx.android.synthetic.main.list_item_business.view.textViewName
 import kotlinx.android.synthetic.main.list_item_business.view.textViewRating
@@ -23,10 +22,10 @@ import org.koin.dsl.module
 
 @VisibleForTesting const val VIEW_TYPE_BUSINESS = 0
 @VisibleForTesting const val VIEW_TYPE_LOADING = 1
-@VisibleForTesting const val VIEW_TYPE_GPS_POSITION = 2
+@VisibleForTesting const val VIEW_TYPE_LOCATION_POSITION = 2
 
 private const val TYPE_LOADING = "BUSINESS_ENTRY_LOADING"
-private const val TYPE_GPS_POSITION = "BUSINESS_ENTRY_GPS_POSITION"
+private const val TYPE_LOCATION_POSITION = "BUSINESS_ENTRY_LOCATION_POSITION"
 
 val adapterModule = module {
     factory { BusinessAdapter() }
@@ -39,23 +38,17 @@ val adapterModule = module {
 class BusinessAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val loadingData = BusinessData(Business(TYPE_LOADING), listOf(Review()))
-    val gpsPositionData = BusinessData(Business(TYPE_GPS_POSITION), listOf(Review()))
+    val locationPositionData = BusinessData(Business(TYPE_LOCATION_POSITION), listOf(Review()))
 
     @VisibleForTesting val businesses = linkedMapOf<String, BusinessData>()
 
-    private val entryTypeMap = hashMapOf(
-        TYPE_LOADING to VIEW_TYPE_LOADING,
-        TYPE_GPS_POSITION to VIEW_TYPE_GPS_POSITION
-    )
+    private val entryTypeMap = hashMapOf(TYPE_LOADING to VIEW_TYPE_LOADING, TYPE_LOCATION_POSITION to VIEW_TYPE_LOCATION_POSITION)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_BUSINESS -> BusinessDataViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_business, parent, false))
-            VIEW_TYPE_GPS_POSITION -> GpsPermissionDataViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.list_item_gps, parent, false))
-            else -> BusinessDataViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_loading, parent, false))
+            VIEW_TYPE_BUSINESS -> BusinessDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_business, parent, false))
+            VIEW_TYPE_LOCATION_POSITION -> LocationPermissionDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_gps, parent, false))
+            else -> BusinessDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_loading, parent, false))
         }
     }
 
@@ -66,15 +59,15 @@ class BusinessAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
-            VIEW_TYPE_BUSINESS -> (holder as BusinessDataViewHolder)
-                .bind(businesses.values.elementAt(position))
-            VIEW_TYPE_GPS_POSITION -> (holder as GpsPermissionDataViewHolder).bind()
+            VIEW_TYPE_BUSINESS -> (holder as BusinessDataViewHolder).bind(businesses.values.elementAt(position))
+            VIEW_TYPE_LOCATION_POSITION -> (holder as LocationPermissionDataViewHolder).bind()
         }
     }
 
     /**
      * Add businesses from a list to a linked map. This way we don't have to search the list for
-     * the GPS or loading cards. This also helps if for any reason we get duplicate business IDs.
+     * the location or loading cards. This also helps if for any reason we get duplicate business
+     * IDs.
      * @param businessDataList The business data list to add to the business map.
      */
     fun addBusinesses(businessDataList: List<BusinessData>) {
@@ -82,40 +75,54 @@ class BusinessAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         businessDataList.forEach {
             businesses[it.business.id] = it
         }
+        notifyDataSetChanged()
     }
 
     /**
-     * Clear the business map but keep the GPS card if it's meant to be there.
+     * Clear the business map but keep the location card if it's meant to be there.
      */
     fun clearBusinesses() {
         when {
-            businesses.containsKey(TYPE_GPS_POSITION) -> {
+            businesses.containsKey(TYPE_LOCATION_POSITION) -> {
                 businesses.clear()
-                addBusinesses(listOf(gpsPositionData))
+                addBusinesses(listOf(locationPositionData))
             }
             else -> businesses.clear()
         }
+        notifyDataSetChanged()
     }
 
     /**
-     * Add the GPS card to the business map and update the data set.
+     * Add the location card to the business map and update the data set.
      */
-    fun addGpsCard() = addBusinesses(listOf(gpsPositionData))
+    fun addLocationCard() {
+        addBusinesses(listOf(locationPositionData))
+        notifyDataSetChanged()
+    }
 
     /**
-     * Remove the GPS card from the business map and update the data set.
+     * Remove the location card from the business map and update the data set.
      */
-    fun removeGpsCard() = businesses.remove(TYPE_GPS_POSITION)
+    fun removeLocationCard() {
+        businesses.remove(TYPE_LOCATION_POSITION)
+        notifyDataSetChanged()
+    }
 
     /**
      * Add the loading card to the business map and update the data set.
      */
-    fun addLoadingCard() = addBusinesses(listOf(loadingData))
+    fun addLoadingCard() {
+        addBusinesses(listOf(loadingData))
+        notifyItemInserted(itemCount - 1)
+    }
 
     /**
      * Remove the loading card from the business map and update the data set.
      */
-    fun removeLoadingCard() = businesses.remove(TYPE_LOADING)
+    fun removeLoadingCard() {
+        businesses.remove(TYPE_LOADING)
+        notifyItemRemoved(itemCount - 1)
+    }
 
     /**
      * The BusinessDataViewHolder class holds all UI references for a business entry in the
@@ -140,14 +147,14 @@ class BusinessAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     /**
-     * The GpsPermissionDataViewHolder class holds all UI references for a GPS entry in the
+     * The LocationPermissionDataViewHolder class holds all UI references for a GPS entry in the
      * RecyclerView. It requires permission in order to launch a permission request.
      * @param itemView The single item view.
      */
-    class GpsPermissionDataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class LocationPermissionDataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind() {
             itemView.apply {
-                buttonEnableGps.setOnClickListener {
+                buttonEnableLocation.setOnClickListener {
                     ActivityCompat.requestPermissions(context as Activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)
                 }
             }

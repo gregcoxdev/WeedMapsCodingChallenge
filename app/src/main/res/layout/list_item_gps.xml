@@ -46,7 +46,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     style="?android:attr/borderlessButtonStyle"
-                    android:id="@+id/buttonEnableGps"
+                    android:id="@+id/buttonEnableLocation"
                     android:fontFamily="@font/font_figma"
                     app:fontFamily="@font/font_figma"
                     android:includeFontPadding="false"

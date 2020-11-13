@@ -21,12 +21,13 @@ private const val FAILURE_END_FRAME = 841
 class LottieProgressBar : LottieAnimationView, Animator.AnimatorListener {
 
     constructor(context: Context): super(context)
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr : Int)
-            : super(context, attrs, defStyleAttr)
 
-    var onAnimationSuccessEndLambda: (() -> Unit) = {}
-    var onAnimationFailureEndLambda: (() -> Unit) = {}
+    constructor(context: Context, attrs: AttributeSet): super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr : Int) : super(context, attrs, defStyleAttr)
+
+    var onAnimationSuccessEndAction: (() -> Unit) = {}
+    var onAnimationFailureEndAction: (() -> Unit) = {}
     private var isSuccessful = false
     private var isFailed = false
 
@@ -41,8 +42,8 @@ class LottieProgressBar : LottieAnimationView, Animator.AnimatorListener {
     override fun onAnimationEnd(animation: Animator) {
         // Notify via lambda.
         when {
-            isSuccessful -> { onAnimationSuccessEndLambda() }
-            isFailed -> { onAnimationFailureEndLambda() }
+            isSuccessful -> { onAnimationSuccessEndAction() }
+            isFailed -> { onAnimationFailureEndAction() }
         }
     }
 
@@ -68,13 +69,8 @@ class LottieProgressBar : LottieAnimationView, Animator.AnimatorListener {
     }
 
     fun startSuccessfulAnimation(isImmediate: Boolean) {
-        isSuccessful = when {
-            isImmediate -> {
-                setSuccessfulFrameData()
-                true
-            }
-            else -> true
-        }
+        if (isImmediate) setSuccessfulFrameData()
+        isSuccessful = true
     }
 
     fun startFailureAnimation(isImmediate: Boolean) {

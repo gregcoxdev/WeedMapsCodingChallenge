@@ -23,7 +23,6 @@ object Versions {
     const val constraint_layout = "2.0.1"
 
     // Added dependencies.
-    const val kotlin_coroutines_android = "1.3.5"
     const val moshi_kotlin = "1.8.0"
     const val material_design = "1.2.1"
     const val livedata_ktx = "2.2.0"

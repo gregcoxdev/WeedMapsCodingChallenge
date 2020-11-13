@@ -6,23 +6,24 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-private const val TAG = "InfiniteRecyclerView"
+private const val TAG = "PaginationRecyclerView"
 
 /**
- * InfiniteRecyclerView is a custom view class that will perform a lambda operation every time the
+ * PaginationRecyclerView is a custom view class that will perform a lambda operation every time the
  * user scrolls to the very bottom of the recycler view. It also allows for debouncing the requests
  * in order to make sure there isn't an overflow of network requests.
  */
-class InfiniteRecyclerView : RecyclerView {
+class PaginationRecyclerView : RecyclerView {
 
     var onRequestMoreDataLambda: ((itemCount: Int) -> Unit) = {}
     var debounceRequests = false
-    var lastVisibleItemPosition = -1
+    private var lastVisibleItemPosition = -1
 
     constructor(context: Context) : super(context)
+
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int)
-            : super(context, attrs, defStyleAttr)
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
         addOnScrollListener(object : RecyclerView.OnScrollListener() {

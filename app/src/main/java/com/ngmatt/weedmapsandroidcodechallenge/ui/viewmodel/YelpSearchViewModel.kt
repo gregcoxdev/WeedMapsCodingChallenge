@@ -55,12 +55,10 @@ class YelpSearchViewModel(private val repository: YelpBusinessSearchRepository, 
     @VisibleForTesting
     suspend fun getBusinessBatch(term: String, latitude: Double, longitude: Double, offset: Int): BusinessBatch {
         val businessesResponse = repository.getBusinesses(term, latitude, longitude, offset)
-            .also { Log.d(TAG, "Searching $term yielded ${it.body()?.total} results. Server response=[${it.raw()}, isCached=[${it.raw().cacheResponse() != null}], responseBody=[${it.body()}") }
         val businessBody = businessesResponse.body()
         val businesses = businessBody?.businesses ?: listOf()
         val businessBatchList = businesses.flatMap { business ->
             val reviews = repository.getReviews(business.id)
-                .also { Log.d(TAG, "Review for ${business.name} yielded ${it.body()?.reviews?.size} results. Server response=[${it.raw()}, isCached=[${it.raw().cacheResponse() != null}]") }
                 .body()?.reviews?: listOf()
             listOf(BusinessData(business, reviews))
         }
